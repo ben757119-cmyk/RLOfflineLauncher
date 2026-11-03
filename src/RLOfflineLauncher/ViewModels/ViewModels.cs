@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -29,6 +30,15 @@ public partial class MainViewModel : ObservableObject
         Cosmetics = cosmetics;
         Settings = settings;
         Logs = logs;
+    }
+
+    [RelayCommand]
+    private void SelectTab(object? parameter)
+    {
+        if (parameter is string s && int.TryParse(s, out int idx))
+            SelectedTabIndex = idx;
+        else if (parameter is int i)
+            SelectedTabIndex = i;
     }
 }
 
@@ -111,13 +121,10 @@ public partial class LauncherViewModel : ObservableObject
     private async Task ScanEacAsync()
     {
         IsBusy = true;
-        LaunchStateText = "Scanning…";
+        LaunchStateText = "Scanning\u2026";
         try
         {
-            await Task.Run(() =>
-            {
-                LastScan = _eac.Scan();
-            });
+            await Task.Run(() => { LastScan = _eac.Scan(); });
             ApplyScanUi(LastScan!);
             _log.Add("EAC scan: " + LastScan!.Summary);
         }
@@ -150,11 +157,10 @@ public partial class LauncherViewModel : ObservableObject
     {
         if (IsBusy) return;
         IsBusy = true;
-        LaunchStateText = "Scanning…";
+        LaunchStateText = "Scanning\u2026";
 
         try
         {
-            // Fresh scan immediately before launch
             var scan = await Task.Run(() => _eac.Scan());
             LastScan = scan;
             ApplyScanUi(scan);
@@ -162,9 +168,8 @@ public partial class LauncherViewModel : ObservableObject
             if (scan.State == EacDetectionState.Detected)
             {
                 LaunchStateText = "Blocked (EAC detected)";
-                _log.Add("Launch aborted – EAC detected");
+                _log.Add("Launch aborted \u2013 EAC detected");
 
-                // Exact required message text
                 const string exactMessage =
                     "Please launch Rocket League without Easy Anti-Cheat\n\nDo you need help?";
 
@@ -174,8 +179,6 @@ public partial class LauncherViewModel : ObservableObject
                     _url.Open("https://youtube.com");
                     _log.Add("Opened https://youtube.com for help");
                 }
-
-                // Cosmetic subsystem must NOT be initialized
                 return;
             }
 
@@ -184,7 +187,7 @@ public partial class LauncherViewModel : ObservableObject
                 LaunchStateText = "Blocked (scan inconclusive)";
                 _dialog.ShowWarning("Safety check incomplete",
                     "The EAC safety check could not be completed reliably. Launch has been blocked.\n\nYou can retry the scan from the Launcher page.");
-                _log.Add("Launch aborted – scan inconclusive");
+                _log.Add("Launch aborted \u2013 scan inconclusive");
                 return;
             }
 
@@ -197,13 +200,12 @@ public partial class LauncherViewModel : ObservableObject
                 return;
             }
 
-            LaunchStateText = "Launching…";
+            LaunchStateText = "Launching\u2026";
             var (ok, message, pid) = await _launcher.LaunchAsync(plan);
             if (ok)
             {
                 LaunchStateText = "Process started";
                 _log.Add(message);
-                // Only now is it safe to consider initializing the (preview-only) applier
                 await _applier.InitializeAsync();
             }
             else
@@ -379,7 +381,7 @@ public partial class LogsViewModel : ObservableObject
     [RelayCommand]
     private void Copy()
     {
-        try { Clipboard.SetText(LogText); } catch { /* ignore */ }
+        try { Clipboard.SetText(LogText); } catch { }
     }
 
     [RelayCommand]
@@ -400,18 +402,5 @@ public partial class LogsViewModel : ObservableObject
         {
             File.WriteAllText(dlg.FileName, LogText + Environment.NewLine + DiagnosticSummary);
         }
-    }
-}
-
-// Add SelectTab command support
-partial class MainViewModel
-{
-    [RelayCommand]
-    private void SelectTab(object? parameter)
-    {
-        if (parameter is string s && int.TryParse(s, out int idx))
-            SelectedTabIndex = idx;
-        else if (parameter is int i)
-            SelectedTabIndex = i;
     }
 }
