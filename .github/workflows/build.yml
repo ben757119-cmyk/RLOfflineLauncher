@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore
-        run: dotnet restore RLOfflineLauncher.sln
+        run: dotnet restore RLOfflineLauncher.sln -r win-x64
         shell: pwsh
 
       - name: Build
@@ -55,8 +55,7 @@ jobs:
             -p:PublishSingleFile=true `
             -p:IncludeNativeLibrariesForSelfExtract=true `
             -p:EnableCompressionInSingleFile=true `
-            --output ./publish `
-            --no-restore
+            --output ./publish
         shell: pwsh
 
       - name: Upload application artifact
