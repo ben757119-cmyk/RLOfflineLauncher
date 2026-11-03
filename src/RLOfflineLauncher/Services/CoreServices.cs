@@ -1,3 +1,4 @@
+using System.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -5,9 +6,6 @@ using RLOfflineLauncher.Models;
 
 namespace RLOfflineLauncher.Services;
 
-// ---------------------------------------------------------------------------
-// Process abstraction (testable)
-// ---------------------------------------------------------------------------
 public interface IProcessProvider
 {
     IReadOnlyList<ProcessInfo> GetProcesses();
@@ -31,7 +29,7 @@ public sealed class ProcessProvider : IProcessProvider
             try
             {
                 string? path = null;
-                try { path = p.MainModule?.FileName; } catch { /* access denied */ }
+                try { path = p.MainModule?.FileName; } catch { }
                 list.Add(new ProcessInfo
                 {
                     Id = p.Id,
@@ -58,9 +56,6 @@ public sealed class ProcessProvider : IProcessProvider
     }
 }
 
-// ---------------------------------------------------------------------------
-// EAC Detection
-// ---------------------------------------------------------------------------
 public interface IEacDetectionService
 {
     EacScanResult Scan();
@@ -68,7 +63,6 @@ public interface IEacDetectionService
 
 public sealed class EacDetectionService : IEacDetectionService
 {
-    // Heuristic list – must be maintained. Documented in README.
     public static readonly string[] KnownEacProcessNames =
     {
         "EasyAntiCheat",
@@ -78,9 +72,6 @@ public sealed class EacDetectionService : IEacDetectionService
         "EasyAntiCheat_EOS_Setup"
     };
 
-    /// <summary>
-    /// If more than this fraction of processes are inaccessible, result becomes Inconclusive.
-    /// </summary>
     public const double InaccessibleThreshold = 0.40;
 
     private readonly IProcessProvider _provider;
@@ -176,14 +167,8 @@ public sealed class EacDetectionService : IEacDetectionService
     }
 }
 
-// ---------------------------------------------------------------------------
-// Dialog / URL (testable)
-// ---------------------------------------------------------------------------
 public interface IDialogService
 {
-    /// <summary>
-    /// Shows a Yes/No warning dialog. Returns true if Yes was clicked.
-    /// </summary>
     bool ShowYesNo(string title, string message);
     void ShowWarning(string title, string message);
     void ShowInfo(string title, string message);
@@ -194,8 +179,7 @@ public sealed class DialogService : IDialogService
     public bool ShowYesNo(string title, string message)
     {
         var result = System.Windows.MessageBox.Show(
-            message,
-            title,
+            message, title,
             System.Windows.MessageBoxButton.YesNo,
             System.Windows.MessageBoxImage.Warning);
         return result == System.Windows.MessageBoxResult.Yes;
@@ -227,28 +211,16 @@ public sealed class UrlOpener : IUrlOpener
         {
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
-        catch (Exception)
-        {
-            // swallow – caller already handled the user flow
-        }
+        catch (Exception) { }
     }
 }
 
-// ---------------------------------------------------------------------------
-// Launch flags (central constants)
-// ---------------------------------------------------------------------------
 public static class LaunchFlags
 {
     public const string Offline = "-offline";
     public const string NoAntiCheat = "-noanticheat";
-
-    // Official documented Epic/Steam option is "-noeac". We pass the requested flags
-    // as-is and document that their effect is unverified.
 }
 
-// ---------------------------------------------------------------------------
-// Launch Planner
-// ---------------------------------------------------------------------------
 public interface ILaunchPlanner
 {
     LaunchPlan CreatePlan(string gamePath, bool useOffline, bool useNoAntiCheat);
@@ -269,16 +241,12 @@ public sealed class LaunchPlanner : ILaunchPlanner
             };
         }
 
-        // Resolve to full path and reject obvious reparse tricks where possible
         string fullPath;
         try
         {
             fullPath = Path.GetFullPath(gamePath);
             var attrs = File.GetAttributes(fullPath);
-            if ((attrs & FileAttributes.ReparsePoint) != 0)
-            {
-                // Still allow but note it
-            }
+            _ = attrs; // silence unused
         }
         catch
         {
@@ -293,8 +261,6 @@ public sealed class LaunchPlanner : ILaunchPlanner
         if (useOffline) args.Add(LaunchFlags.Offline);
         if (useNoAntiCheat) args.Add(LaunchFlags.NoAntiCheat);
 
-        // Direct executable launch is the only mechanism where we can reliably pass arguments.
-        // Steam/Epic URI schemes do not reliably forward arbitrary args to the game binary.
         return new LaunchPlan
         {
             Mechanism = LaunchMechanismKind.DirectExecutable,
@@ -342,7 +308,6 @@ public sealed class GameLauncher : IGameLauncher
             if (process is null)
                 return (false, "Process.Start returned null.", null);
 
-            // Brief wait to see if it exits immediately
             await Task.Delay(800, ct);
             if (process.HasExited)
             {
@@ -351,7 +316,7 @@ public sealed class GameLauncher : IGameLauncher
 
             return (true,
                 $"Process started (PID {process.Id}) with arguments: {string.Join(' ', plan.Arguments)}. " +
-                "Rocket League’s actual online/offline state is not verified by this tool.",
+                "Rocket League's actual online/offline state is not verified by this tool.",
                 process.Id);
         }
         catch (Exception ex)
@@ -362,9 +327,6 @@ public sealed class GameLauncher : IGameLauncher
     }
 }
 
-// ---------------------------------------------------------------------------
-// Game process monitor
-// ---------------------------------------------------------------------------
 public interface IGameProcessMonitor
 {
     bool IsGameRunning { get; }
@@ -408,7 +370,7 @@ public sealed class GameProcessMonitor : IGameProcessMonitor, IDisposable
                 p.Dispose();
             }
         }
-        catch { /* ignore */ }
+        catch { }
 
         if (running && !_wasRunning)
         {
@@ -433,9 +395,6 @@ public sealed class GameProcessMonitor : IGameProcessMonitor, IDisposable
     public void Dispose() => Stop();
 }
 
-// ---------------------------------------------------------------------------
-// Cosmetic catalog
-// ---------------------------------------------------------------------------
 public interface ICosmeticCatalogService
 {
     CosmeticsCatalog Load();
@@ -498,9 +457,6 @@ public sealed class CosmeticCatalogService : ICosmeticCatalogService
     }
 }
 
-// ---------------------------------------------------------------------------
-// Cosmetic applier (Preview-only implementation)
-// ---------------------------------------------------------------------------
 public interface ICosmeticApplier
 {
     IntegrationStatus Status { get; }
@@ -510,10 +466,6 @@ public interface ICosmeticApplier
     Task ShutdownAsync();
 }
 
-/// <summary>
-/// Fully functional preview-only applier. Keeps temporary in-memory state only.
-/// No game integration exists; this is intentional and documented.
-/// </summary>
 public sealed class PreviewOnlyCosmeticApplier : ICosmeticApplier
 {
     private readonly IEacDetectionService _eac;
@@ -531,7 +483,6 @@ public sealed class PreviewOnlyCosmeticApplier : ICosmeticApplier
 
     public Task<IntegrationStatus> InitializeAsync(CancellationToken ct = default)
     {
-        // Safety: require a clean EAC scan
         var scan = _eac.Scan();
         if (scan.State != EacDetectionState.NotDetected)
         {
@@ -578,9 +529,6 @@ public sealed class PreviewOnlyCosmeticApplier : ICosmeticApplier
     }
 }
 
-// ---------------------------------------------------------------------------
-// Settings
-// ---------------------------------------------------------------------------
 public interface ISettingsService
 {
     AppSettings Load();
@@ -632,9 +580,6 @@ public sealed class SettingsService : ISettingsService
     }
 }
 
-// ---------------------------------------------------------------------------
-// Log buffer
-// ---------------------------------------------------------------------------
 public interface ILogBuffer
 {
     IReadOnlyList<string> Entries { get; }
