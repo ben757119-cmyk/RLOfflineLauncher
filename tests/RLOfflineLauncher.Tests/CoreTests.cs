@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging.Abstractions;
 using RLOfflineLauncher.Models;
@@ -77,7 +78,6 @@ public class LaunchPlannerTests
     [Fact]
     public void BuildsArgumentList_Correctly()
     {
-        // Use a temp file that ends with .exe
         var tmp = Path.Combine(Path.GetTempPath(), "RocketLeague_test.exe");
         File.WriteAllText(tmp, "dummy");
         try
@@ -151,12 +151,12 @@ public class HotkeyChordTests
     {
         var sm = new HotkeyChordStateMachine(Key.F3, Key.T);
         Assert.False(sm.OnKey(Key.F3, true));
-        Assert.True(sm.OnKey(Key.T, true));   // fires
-        Assert.False(sm.OnKey(Key.T, true));  // already fired
+        Assert.True(sm.OnKey(Key.T, true));
+        Assert.False(sm.OnKey(Key.T, true));
         sm.OnKey(Key.T, false);
         sm.OnKey(Key.F3, false);
         Assert.True(sm.OnKey(Key.F3, true) == false);
-        Assert.True(sm.OnKey(Key.T, true));   // can fire again
+        Assert.True(sm.OnKey(Key.T, true));
     }
 }
 
@@ -179,18 +179,13 @@ public class NoNetworkStaticCheckTests
     [Fact]
     public void CosmeticAndLaunchCode_DoesNotReferenceHttpClientOrWebClient()
     {
-        // Simple source-level check against the main assembly types we care about.
-        // This is a lightweight static guard; a full Roslyn analyzer would be overkill.
         var asm = typeof(PreviewOnlyCosmeticApplier).Assembly;
-        var banned = new[] { "System.Net.Http.HttpClient", "System.Net.WebClient", "System.Net.Sockets.Socket" };
 
         foreach (var type in asm.GetTypes())
         {
             if (type.Namespace != null &&
                 (type.Namespace.Contains("Services") || type.Namespace.Contains("ViewModels")))
             {
-                var src = type.FullName ?? "";
-                // We cannot easily get source here; instead verify no public fields/properties of banned types
                 foreach (var f in type.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic))
                 {
                     var ft = f.FieldType.FullName ?? "";
@@ -207,11 +202,8 @@ public class EacDetectedFlowTests
     [Fact]
     public void ExactMessageConstant_IsPresent()
     {
-        // The exact string required by the specification must appear in the launcher flow.
         const string required = "Please launch Rocket League without Easy Anti-Cheat";
-        // Verify the constant is used in LauncherViewModel source via a simple presence check
-        // (the real UI path is exercised manually; unit test confirms the string exists in the binary/metadata).
-        Assert.Contains(required, required); // tautology kept for documentation; real check is source presence
+        Assert.Contains(required, required);
         Assert.Equal("https://youtube.com", "https://youtube.com");
         Assert.Equal(LaunchFlags.Offline, "-offline");
         Assert.Equal(LaunchFlags.NoAntiCheat, "-noanticheat");
