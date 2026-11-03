@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Color x:Key="BgPrimary">#FF1E1E1E</Color>
+  <Color x:Key="BgSecondary">#FF2D2D30</Color>
+  <Color x:Key="BgTertiary">#FF3E3E42</Color>
+  <Color x:Key="FgPrimary">#FFF1F1F1</Color>
+  <Color x:Key="FgSecondary">#FFB0B0B0</Color>
+  <Color x:Key="Accent">#FF007ACC</Color>
+  <Color x:Key="Success">#FF4EC9B0</Color>
+  <Color x:Key="Warning">#FFDCDCAA</Color>
+  <Color x:Key="Error">#FFF44747</Color>
+  <Color x:Key="Border">#FF3F3F46</Color>
+
+  <SolidColorBrush x:Key="BgPrimaryBrush" Color="{StaticResource BgPrimary}"/>
+  <SolidColorBrush x:Key="BgSecondaryBrush" Color="{StaticResource BgSecondary}"/>
+  <SolidColorBrush x:Key="BgTertiaryBrush" Color="{StaticResource BgTertiary}"/>
+  <SolidColorBrush x:Key="FgPrimaryBrush" Color="{StaticResource FgPrimary}"/>
+  <SolidColorBrush x:Key="FgSecondaryBrush" Color="{StaticResource FgSecondary}"/>
+  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource Accent}"/>
+  <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource Success}"/>
+  <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource Warning}"/>
+  <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error}"/>
+  <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource Border}"/>
+
+</ResourceDictionary>

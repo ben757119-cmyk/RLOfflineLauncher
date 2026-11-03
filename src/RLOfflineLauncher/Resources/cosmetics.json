@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    { "id": "body-01", "name": "Sample Body A", "category": "Cars/Body styles", "description": "A generic body style placeholder for local preview.", "rarity": "Common", "tags": ["body", "sample"], "previewColor": "#4A90D9", "previewGlyph": "B1", "integrationKey": "body.sample.a" },
+    { "id": "body-02", "name": "Sample Body B", "category": "Cars/Body styles", "description": "Another generic body style.", "rarity": "Rare", "tags": ["body"], "previewColor": "#E67E22", "previewGlyph": "B2", "integrationKey": "body.sample.b" },
+    { "id": "body-03", "name": "Sample Body C", "category": "Cars/Body styles", "description": "Third placeholder body.", "rarity": "Very Rare", "tags": ["body"], "previewColor": "#9B59B6", "previewGlyph": "B3", "integrationKey": "body.sample.c" },
+    { "id": "body-04", "name": "Sample Body D", "category": "Cars/Body styles", "description": "Fourth body placeholder.", "rarity": "Import", "tags": ["body"], "previewColor": "#1ABC9C", "previewGlyph": "B4", "integrationKey": "body.sample.d" },
+    { "id": "body-05", "name": "Sample Body E", "category": "Cars/Body styles", "description": "Fifth body placeholder.", "rarity": "Exotic", "tags": ["body"], "previewColor": "#E74C3C", "previewGlyph": "B5", "integrationKey": "body.sample.e" },
+    { "id": "body-06", "name": "Sample Body F", "category": "Cars/Body styles", "description": "Sixth body placeholder.", "rarity": "Black Market", "tags": ["body"], "previewColor": "#F1C40F", "previewGlyph": "B6", "integrationKey": "body.sample.f" },
+
+    { "id": "title-01", "name": "Sample Title Alpha", "category": "Titles", "description": "Placeholder title text.", "rarity": "Common", "tags": ["title"], "previewColor": "#3498DB", "previewGlyph": "T1", "integrationKey": "title.alpha" },
+    { "id": "title-02", "name": "Sample Title Beta", "category": "Titles", "description": "Another title placeholder.", "rarity": "Rare", "tags": ["title"], "previewColor": "#2ECC71", "previewGlyph": "T2", "integrationKey": "title.beta" },
+    { "id": "title-03", "name": "Sample Title Gamma", "category": "Titles", "description": "Third title.", "rarity": "Very Rare", "tags": ["title"], "previewColor": "#E91E63", "previewGlyph": "T3", "integrationKey": "title.gamma" },
+    { "id": "title-04", "name": "Sample Title Delta", "category": "Titles", "description": "Fourth title.", "rarity": "Import", "tags": ["title"], "previewColor": "#00BCD4", "previewGlyph": "T4", "integrationKey": "title.delta" },
+    { "id": "title-05", "name": "Sample Title Epsilon", "category": "Titles", "description": "Fifth title.", "rarity": "Exotic", "tags": ["title"], "previewColor": "#FF5722", "previewGlyph": "T5", "integrationKey": "title.epsilon" },
+    { "id": "title-06", "name": "Sample Title Zeta", "category": "Titles", "description": "Sixth title.", "rarity": "Black Market", "tags": ["title"], "previewColor": "#607D8B", "previewGlyph": "T6", "integrationKey": "title.zeta" },
+
+    { "id": "banner-01", "name": "Sample Banner 1", "category": "Banners", "description": "Generic banner placeholder.", "rarity": "Common", "tags": ["banner"], "previewColor": "#8E44AD", "previewGlyph": "BN1", "integrationKey": "banner.1" },
+    { "id": "banner-02", "name": "Sample Banner 2", "category": "Banners", "description": "Second banner.", "rarity": "Rare", "tags": ["banner"], "previewColor": "#16A085", "previewGlyph": "BN2", "integrationKey": "banner.2" },
+    { "id": "banner-03", "name": "Sample Banner 3", "category": "Banners", "description": "Third banner.", "rarity": "Very Rare", "tags": ["banner"], "previewColor": "#D35400", "previewGlyph": "BN3", "integrationKey": "banner.3" },
+    { "id": "banner-04", "name": "Sample Banner 4", "category": "Banners", "description": "Fourth banner.", "rarity": "Import", "tags": ["banner"], "previewColor": "#2980B9", "previewGlyph": "BN4", "integrationKey": "banner.4" },
+    { "id": "banner-05", "name": "Sample Banner 5", "category": "Banners", "description": "Fifth banner.", "rarity": "Exotic", "tags": ["banner"], "previewColor": "#C0392B", "previewGlyph": "BN5", "integrationKey": "banner.5" },
+    { "id": "banner-06", "name": "Sample Banner 6", "category": "Banners", "description": "Sixth banner.", "rarity": "Black Market", "tags": ["banner"], "previewColor": "#27AE60", "previewGlyph": "BN6", "integrationKey": "banner.6" },
+
+    { "id": "decal-01", "name": "Sample Decal A", "category": "Decals", "description": "Placeholder decal.", "rarity": "Common", "tags": ["decal"], "previewColor": "#F39C12", "previewGlyph": "D1", "integrationKey": "decal.a" },
+    { "id": "decal-02", "name": "Sample Decal B", "category": "Decals", "description": "Second decal.", "rarity": "Rare", "tags": ["decal"], "previewColor": "#1ABC9C", "previewGlyph": "D2", "integrationKey": "decal.b" },
+    { "id": "decal-03", "name": "Sample Decal C", "category": "Decals", "description": "Third decal.", "rarity": "Very Rare", "tags": ["decal"], "previewColor": "#9B59B6", "previewGlyph": "D3", "integrationKey": "decal.c" },
+    { "id": "decal-04", "name": "Sample Decal D", "category": "Decals", "description": "Fourth decal.", "rarity": "Import", "tags": ["decal"], "previewColor": "#E74C3C", "previewGlyph": "D4", "integrationKey": "decal.d" },
+    { "id": "decal-05", "name": "Sample Decal E", "category": "Decals", "description": "Fifth decal.", "rarity": "Exotic", "tags": ["decal"], "previewColor": "#3498DB", "previewGlyph": "D5", "integrationKey": "decal.e" },
+    { "id": "decal-06", "name": "Sample Decal F", "category": "Decals", "description": "Sixth decal.", "rarity": "Black Market", "tags": ["decal"], "previewColor": "#2C3E50", "previewGlyph": "D6", "integrationKey": "decal.f" },
+
+    { "id": "wheel-01", "name": "Sample Wheel 1", "category": "Wheels", "description": "Generic wheel placeholder.", "rarity": "Common", "tags": ["wheels"], "previewColor": "#95A5A6", "previewGlyph": "W1", "integrationKey": "wheel.1" },
+    { "id": "wheel-02", "name": "Sample Wheel 2", "category": "Wheels", "description": "Second wheel.", "rarity": "Rare", "tags": ["wheels"], "previewColor": "#E67E22", "previewGlyph": "W2", "integrationKey": "wheel.2" },
+    { "id": "wheel-03", "name": "Sample Wheel 3", "category": "Wheels", "description": "Third wheel.", "rarity": "Very Rare", "tags": ["wheels"], "previewColor": "#8E44AD", "previewGlyph": "W3", "integrationKey": "wheel.3" },
+    { "id": "wheel-04", "name": "Sample Wheel 4", "category": "Wheels", "description": "Fourth wheel.", "rarity": "Import", "tags": ["wheels"], "previewColor": "#16A085", "previewGlyph": "W4", "integrationKey": "wheel.4" },
+    { "id": "wheel-05", "name": "Sample Wheel 5", "category": "Wheels", "description": "Fifth wheel.", "rarity": "Exotic", "tags": ["wheels"], "previewColor": "#C0392B", "previewGlyph": "W5", "integrationKey": "wheel.5" },
+    { "id": "wheel-06", "name": "Sample Wheel 6", "category": "Wheels", "description": "Sixth wheel.", "rarity": "Black Market", "tags": ["wheels"], "previewColor": "#F1C40F", "previewGlyph": "W6", "integrationKey": "wheel.6" },
+
+    { "id": "ge-01", "name": "Sample Explosion 1", "category": "Goal Explosions", "description": "Placeholder goal explosion.", "rarity": "Import", "tags": ["explosion", "goal"], "previewColor": "#E74C3C", "previewGlyph": "GE1", "integrationKey": "ge.1" },
+    { "id": "ge-02", "name": "Sample Explosion 2", "category": "Goal Explosions", "description": "Second explosion.", "rarity": "Exotic", "tags": ["explosion"], "previewColor": "#9B59B6", "previewGlyph": "GE2", "integrationKey": "ge.2" },
+    { "id": "ge-03", "name": "Sample Explosion 3", "category": "Goal Explosions", "description": "Third explosion.", "rarity": "Black Market", "tags": ["explosion"], "previewColor": "#3498DB", "previewGlyph": "GE3", "integrationKey": "ge.3" },
+    { "id": "ge-04", "name": "Sample Explosion 4", "category": "Goal Explosions", "description": "Fourth explosion.", "rarity": "Import", "tags": ["explosion"], "previewColor": "#1ABC9C", "previewGlyph": "GE4", "integrationKey": "ge.4" },
+    { "id": "ge-05", "name": "Sample Explosion 5", "category": "Goal Explosions", "description": "Fifth explosion.", "rarity": "Exotic", "tags": ["explosion"], "previewColor": "#F39C12", "previewGlyph": "GE5", "integrationKey": "ge.5" },
+    { "id": "ge-06", "name": "Sample Explosion 6", "category": "Goal Explosions", "description": "Sixth explosion.", "rarity": "Black Market", "tags": ["explosion"], "previewColor": "#2ECC71", "previewGlyph": "GE6", "integrationKey": "ge.6" },
+
+    { "id": "trail-01", "name": "Neon Trail 1", "category": "Trails", "description": "Placeholder trail effect.", "rarity": "Rare", "tags": ["trail", "neon"], "previewColor": "#00FFFF", "previewGlyph": "TR1", "integrationKey": "trail.1" },
+    { "id": "trail-02", "name": "Neon Trail 2", "category": "Trails", "description": "Second trail.", "rarity": "Very Rare", "tags": ["trail"], "previewColor": "#FF00FF", "previewGlyph": "TR2", "integrationKey": "trail.2" },
+    { "id": "trail-03", "name": "Neon Trail 3", "category": "Trails", "description": "Third trail.", "rarity": "Import", "tags": ["trail"], "previewColor": "#FFFF00", "previewGlyph": "TR3", "integrationKey": "trail.3" },
+    { "id": "trail-04", "name": "Neon Trail 4", "category": "Trails", "description": "Fourth trail.", "rarity": "Exotic", "tags": ["trail"], "previewColor": "#00FF00", "previewGlyph": "TR4", "integrationKey": "trail.4" },
+    { "id": "trail-05", "name": "Neon Trail 5", "category": "Trails", "description": "Fifth trail.", "rarity": "Black Market", "tags": ["trail"], "previewColor": "#FF4500", "previewGlyph": "TR5", "integrationKey": "trail.5" },
+    { "id": "trail-06", "name": "Neon Trail 6", "category": "Trails", "description": "Sixth trail.", "rarity": "Import", "tags": ["trail"], "previewColor": "#1E90FF", "previewGlyph": "TR6", "integrationKey": "trail.6" },
+
+    { "id": "other-01", "name": "Sample Antenna", "category": "Other", "description": "Placeholder antenna / topper style item.", "rarity": "Common", "tags": ["antenna", "topper"], "previewColor": "#BDC3C7", "previewGlyph": "OT1", "integrationKey": "other.antenna" },
+    { "id": "other-02", "name": "Sample Topper", "category": "Other", "description": "Placeholder topper.", "rarity": "Rare", "tags": ["topper"], "previewColor": "#E91E63", "previewGlyph": "OT2", "integrationKey": "other.topper" },
+    { "id": "other-03", "name": "Sample Avatar Border", "category": "Other", "description": "Placeholder player avatar border.", "rarity": "Very Rare", "tags": ["avatar", "border"], "previewColor": "#673AB7", "previewGlyph": "OT3", "integrationKey": "other.border" },
+    { "id": "other-04", "name": "Sample Boost", "category": "Other", "description": "Placeholder boost trail variant.", "rarity": "Import", "tags": ["boost"], "previewColor": "#FF9800", "previewGlyph": "OT4", "integrationKey": "other.boost" },
+    { "id": "other-05", "name": "Sample Engine Sound", "category": "Other", "description": "Placeholder audio cosmetic.", "rarity": "Exotic", "tags": ["sound"], "previewColor": "#009688", "previewGlyph": "OT5", "integrationKey": "other.sound" },
+    { "id": "other-06", "name": "Sample Paint Finish", "category": "Other", "description": "Placeholder paint finish.", "rarity": "Black Market", "tags": ["paint"], "previewColor": "#795548", "previewGlyph": "OT6", "integrationKey": "other.paint" }
+  ]
+}

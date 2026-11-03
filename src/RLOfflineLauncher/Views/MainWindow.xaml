@@ -1,0 +1,171 @@
+<Window x:Class="RLOfflineLauncher.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RL Offline Launcher"
+        Height="720" Width="1100"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgPrimaryBrush}">
+  <DockPanel>
+    <!-- Header -->
+    <Border DockPanel.Dock="Top" Background="{StaticResource BgSecondaryBrush}" Padding="16,10">
+      <Grid>
+        <TextBlock Text="RL Offline Launcher" FontSize="18" FontWeight="SemiBold"
+                   Foreground="{StaticResource FgPrimaryBrush}" VerticalAlignment="Center"/>
+        <TextBlock Text="Unofficial • Local preview only • No game integration"
+                   Foreground="{StaticResource FgSecondaryBrush}"
+                   HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="12"/>
+      </Grid>
+    </Border>
+
+    <!-- Left nav -->
+    <Border DockPanel.Dock="Left" Width="180" Background="{StaticResource BgSecondaryBrush}">
+      <StackPanel Margin="8">
+        <Button Content="Launcher" Command="{Binding SelectTabCommand}" CommandParameter="0" Margin="0,4"/>
+        <Button Content="Cosmetics" Command="{Binding SelectTabCommand}" CommandParameter="1" Margin="0,4"/>
+        <Button Content="Settings" Command="{Binding SelectTabCommand}" CommandParameter="2" Margin="0,4"/>
+        <Button Content="Logs / Diagnostics" Command="{Binding SelectTabCommand}" CommandParameter="3" Margin="0,4"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Content -->
+    <TabControl SelectedIndex="{Binding SelectedTabIndex}" BorderThickness="0" Background="Transparent">
+      <!-- Launcher -->
+      <TabItem Header="Launcher" Visibility="Collapsed">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+          <StackPanel>
+            <TextBlock Text="Rocket League Path" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <DockPanel Margin="0,0,0,12">
+              <Button DockPanel.Dock="Right" Content="Browse…" Command="{Binding Launcher.BrowsePathCommand}"/>
+              <TextBox Text="{Binding Launcher.GamePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+            </DockPanel>
+
+            <Border Background="{StaticResource BgSecondaryBrush}" Padding="12" Margin="0,0,0,12" CornerRadius="4">
+              <StackPanel>
+                <TextBlock Text="EAC Detection Status" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding Launcher.EacStatusText}" Margin="0,6,0,0"
+                           Foreground="{Binding Launcher.EacStatusColor}"/>
+                <Button Content="Scan now" Command="{Binding Launcher.ScanEacCommand}"
+                        HorizontalAlignment="Left" Margin="0,8,0,0"
+                        IsEnabled="{Binding Launcher.IsBusy, Converter={StaticResource InvertBoolConverter}}"/>
+              </StackPanel>
+            </Border>
+
+            <TextBlock Text="Command line that will be used" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding Launcher.CommandLinePreview}" IsReadOnly="True"
+                     TextWrapping="Wrap" Margin="0,0,0,12" MinHeight="40"/>
+
+            <Border Background="{StaticResource BgSecondaryBrush}" Padding="12" Margin="0,0,0,12" CornerRadius="4">
+              <StackPanel>
+                <TextBlock Text="Launch state" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding Launcher.LaunchStateText}" Margin="0,6,0,0"/>
+              </StackPanel>
+            </Border>
+
+            <Button Content="Launch with selected flags" Command="{Binding Launcher.LaunchCommand}"
+                    FontWeight="SemiBold" Padding="16,10"
+                    IsEnabled="{Binding Launcher.IsBusy, Converter={StaticResource InvertBoolConverter}}"/>
+
+            <TextBlock Text="Note: -offline and -noanticheat are passed as requested. Their effect on the current Rocket League version is unverified. Official documented no-EAC option is -noeac via the launcher."
+                       TextWrapping="Wrap" Foreground="{StaticResource FgSecondaryBrush}" Margin="0,12,0,0" FontSize="11"/>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Cosmetics -->
+      <TabItem Header="Cosmetics" Visibility="Collapsed">
+        <Grid Margin="16">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <Border Grid.Row="0" Background="#33FFAA00" Padding="10" Margin="0,0,0,10" CornerRadius="3">
+            <TextBlock Text="{Binding Cosmetics.BannerText}" TextWrapping="Wrap" FontWeight="SemiBold"/>
+          </Border>
+
+          <DockPanel Grid.Row="1" Margin="0,0,0,10">
+            <ComboBox DockPanel.Dock="Left" Width="180" ItemsSource="{Binding Cosmetics.Categories}"
+                      SelectedItem="{Binding Cosmetics.SelectedCategory}" Margin="0,0,8,0"/>
+            <TextBox Text="{Binding Cosmetics.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     Tag="Search…" />
+          </DockPanel>
+
+          <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="2*"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox ItemsSource="{Binding Cosmetics.Items}"
+                     SelectedItem="{Binding Cosmetics.SelectedItem}"
+                     DisplayMemberPath="Name"
+                     VirtualizingPanel.IsVirtualizing="True"/>
+            <Border Grid.Column="1" Background="{StaticResource BgSecondaryBrush}" Margin="12,0,0,0" Padding="12">
+              <StackPanel>
+                <TextBlock Text="{Binding Cosmetics.SelectedItem.Name}" FontWeight="SemiBold" FontSize="16"/>
+                <TextBlock Text="{Binding Cosmetics.SelectedItem.Category}" Foreground="{StaticResource FgSecondaryBrush}" Margin="0,4,0,0"/>
+                <TextBlock Text="{Binding Cosmetics.SelectedItem.Description}" TextWrapping="Wrap" Margin="0,12,0,0"/>
+                <TextBlock Text="{Binding Cosmetics.SelectedItem.Rarity}" Margin="0,8,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                  <Button Content="Apply (local preview)" Command="{Binding Cosmetics.ApplyCommand}"/>
+                  <Button Content="Reset item" Command="{Binding Cosmetics.ResetCommand}"/>
+                  <Button Content="Reset all" Command="{Binding Cosmetics.ResetAllCommand}"/>
+                </StackPanel>
+                <TextBlock Text="{Binding Cosmetics.StatusText}" Margin="0,12,0,0" TextWrapping="Wrap"
+                           Foreground="{StaticResource WarningBrush}"/>
+              </StackPanel>
+            </Border>
+          </Grid>
+        </Grid>
+      </TabItem>
+
+      <!-- Settings -->
+      <TabItem Header="Settings" Visibility="Collapsed">
+        <ScrollViewer Padding="20">
+          <StackPanel>
+            <TextBlock Text="Game path" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding Settings.GamePath}" Margin="0,4,0,12"/>
+
+            <CheckBox Content="Pass -offline flag (default on)" IsChecked="{Binding Settings.UseOfflineFlag}" Margin="0,0,0,6"/>
+            <CheckBox Content="Pass -noanticheat flag (default on) – effect unverified" IsChecked="{Binding Settings.UseNoAntiCheatFlag}" Margin="0,0,0,12"/>
+
+            <TextBlock Text="Hotkey chord (modifier + key)" FontWeight="SemiBold"/>
+            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+              <TextBox Text="{Binding Settings.HotkeyModifier}" Width="80" Margin="0,0,8,0"/>
+              <TextBlock Text="+" VerticalAlignment="Center" Margin="0,0,8,0"/>
+              <TextBox Text="{Binding Settings.HotkeyKey}" Width="80"/>
+            </StackPanel>
+            <CheckBox Content="Allow hotkey while launcher is focused (for testing)" IsChecked="{Binding Settings.AllowHotkeyWhenFocused}" Margin="0,0,0,12"/>
+
+            <StackPanel Orientation="Horizontal">
+              <Button Content="Save settings" Command="{Binding Settings.SaveCommand}"/>
+              <Button Content="Reset to defaults" Command="{Binding Settings.ResetCommand}"/>
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <!-- Logs -->
+      <TabItem Header="Logs" Visibility="Collapsed">
+        <Grid Margin="16">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <TextBlock Text="Diagnostic summary" FontWeight="SemiBold"/>
+          <TextBox Grid.Row="0" Text="{Binding Logs.DiagnosticSummary}" IsReadOnly="True"
+                   TextWrapping="Wrap" Margin="0,4,0,12" MinHeight="80"/>
+          <TextBox Grid.Row="1" Text="{Binding Logs.LogText}" IsReadOnly="True"
+                   VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12"/>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="Copy" Command="{Binding Logs.CopyCommand}"/>
+            <Button Content="Clear" Command="{Binding Logs.ClearCommand}"/>
+            <Button Content="Export…" Command="{Binding Logs.ExportCommand}"/>
+          </StackPanel>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</Window>

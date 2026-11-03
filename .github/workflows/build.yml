@@ -1,0 +1,83 @@
+name: Build & Publish
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', 'global.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore RLOfflineLauncher.sln
+        shell: pwsh
+
+      - name: Build
+        run: dotnet build RLOfflineLauncher.sln --configuration Release --no-restore --verbosity minimal
+        shell: pwsh
+
+      - name: Test
+        run: dotnet test RLOfflineLauncher.sln --configuration Release --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults --verbosity normal
+        shell: pwsh
+
+      - name: Publish (self-contained single-file)
+        run: |
+          dotnet publish src/RLOfflineLauncher/RLOfflineLauncher.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:EnableCompressionInSingleFile=true `
+            --output ./publish `
+            --no-restore
+        shell: pwsh
+
+      - name: Upload application artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RLOfflineLauncher-win-x64
+          path: ./publish
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults
+          retention-days: 7
+
+      - name: Failure summary
+        if: failure()
+        run: |
+          Write-Host "::error::Build, test or publish failed. Check the logs above."
+          Write-Host "Common causes: test failure, missing Resources/cosmetics.json copy, or publish path mismatch."
+        shell: pwsh
